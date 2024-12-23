@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Data                       // Lombok: Generates getters, setters, toString, equals, hashCode, etc.
-@NoArgsConstructor          // Lombok: Generates a no-arguments constructor
+@NoArgsConstructor
+@Table(name = "users") // Lombok: Generates a no-arguments constructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
