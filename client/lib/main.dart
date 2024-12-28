@@ -1,9 +1,11 @@
+import 'package:client/screens/NavigationScreen.dart';
 import 'package:client/screens/home_screen.dart';
 import 'package:client/screens/login_screen.dart';
 import 'package:client/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           } else if (snapshot.data != null) {
-            return HomeScreen();
+            return NavigationPage(username: '',);
           } else {
             return LoginScreen();
           }
