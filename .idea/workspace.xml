@@ -9,33 +9,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8dc9c626-7181-4ae3-b260-fd380764dd55" name="Changes" comment="added backend authentication">
-      <change afterPath="$PROJECT_DIR$/client/lib/models/user.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/lib/screens/home_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/lib/screens/login_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/lib/screens/signup_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/lib/services/auth_service.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/lib/utils/storage_helper.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/lib/widgets/custom_button.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/var.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="8dc9c626-7181-4ae3-b260-fd380764dd55" name="Changes" comment="added JWT authentication in server">
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/GalleryScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/Images/ImageDetails.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/Images/UplodImageScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/NavigationScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/Profile/ProfileScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/Profile/SettingScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/screens/SearchScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/services/image_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/config/FirebaseConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/ImageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/android/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/screens/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/screens/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/screens/login_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/screens/login_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/services/auth_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/services/auth_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/client/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/client/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/test/widget_test.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/GratitudePhotodiaryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/GratitudePhotodiaryApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/service/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/service/CustomUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/util/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/util/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/util/JwtUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +45,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Dart File" />
         <option value="Class" />
+        <option value="Dart File" />
       </list>
     </option>
   </component>
@@ -75,34 +73,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GratitudePhotodiaryApplication.executor": "Run",
-    "Application.JwtUtil.executor": "Run",
-    "Flutter.main.dart.executor": "Run",
-    "Maven.gratitude-photodiary [clean,install].executor": "Run",
-    "Maven.gratitude-photodiary [clean].executor": "Run",
-    "Maven.gratitude-photodiary [install].executor": "Run",
-    "Maven.gratitude-photodiary.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "io.flutter.reload.alreadyRun": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/IDEA_Projects/GratitutePhotoDiary/client",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.3264368",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
-    "settings.editor.splitter.proportion": "0.34521386",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GratitudePhotodiaryApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.JwtUtil.executor&quot;: &quot;Run&quot;,
+    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary.executor&quot;: &quot;Run&quot;,
+    &quot;PROJECT_TRUSTED_KEY&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/IDEA_Projects/GratitutePhotoDiary/server/gratitude-photodiary/src/main/resources/firebase&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.3264368&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.34521386&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.gratitude.gratitude_photodiary.dto" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\IDEA_Projects\GratitutePhotoDiary\server\gratitude-photodiary\src\main\resources\firebase" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\IDEA_Projects\GratitutePhotoDiary\server" />
@@ -118,7 +120,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Flutter.main.dart">
+  <component name="RunManager" selected="Application.GratitudePhotodiaryApplication">
     <configuration name="GratitudePhotodiaryApplication" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.gratitude.gratitude_photodiary.GratitudePhotodiaryApplication" />
       <module name="gratitude-photodiary" />
@@ -195,12 +197,30 @@
       <option name="project" value="LOCAL" />
       <updated>1734870523570</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added login , home screens and helpers">
+      <option name="closed" value="true" />
+      <created>1734962605907</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1734962605907</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added JWT authentication in server">
+      <option name="closed" value="true" />
+      <created>1734962679925</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1734962679925</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Flutter Client Initialisation" />
     <MESSAGE value="added backend authentication" />
-    <option name="LAST_COMMIT_MESSAGE" value="added backend authentication" />
+    <MESSAGE value="added login , home screens and helpers" />
+    <MESSAGE value="added JWT authentication in server" />
+    <option name="LAST_COMMIT_MESSAGE" value="added JWT authentication in server" />
   </component>
 </project>

@@ -3,12 +3,12 @@ import 'package:http/http.dart' as http;
 import '../utils/storage_helper.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://localhost:8080/auth';
+  static const String baseUrl = 'http://192.168.1.10:8080/auth';
 
   // Login API call
   static Future<String> login(String username, String password) async {
     final response = await http.post(
-      Uri.parse('http://localhost:8080/auth/login'),
+      Uri.parse('http://192.168.1.10:8080/auth/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'username': username, 'password': password}),
     );
