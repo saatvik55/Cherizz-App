@@ -1,6 +1,7 @@
 import 'package:client/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import 'NavigationScreen.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,10 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    if (!_formKey.currentState!.validate()) {
-      return; // Return early if form validation fails
-    }
-
     setState(() {
       _isLoading = true;
     });
@@ -39,24 +36,26 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       );
 
-      // Navigate to HomeScreen on success
-      Navigator.pushReplacement(
+      // Navigate to the main navigation page with the username
+      Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => NavigationPage(username: _usernameController.text),
+        ),
+            (route) => false, // Remove all previous routes
       );
     } catch (e) {
-      // Show a snackbar for errors
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${e.toString()}')),
-        );
-      });
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
