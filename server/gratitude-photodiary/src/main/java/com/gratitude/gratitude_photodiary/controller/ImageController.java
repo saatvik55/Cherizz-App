@@ -1,64 +1,59 @@
 package com.gratitude.gratitude_photodiary.controller;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.firebase.cloud.FirestoreClient;
+import com.gratitude.gratitude_photodiary.entity.Image;
+import com.gratitude.gratitude_photodiary.service.ImageService;
+import com.gratitude.gratitude_photodiary.util.FirebaseUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping("/images")
 public class ImageController {
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Map<String, Object>>> getImagesByUserId(@PathVariable String userId) {
+    private final ImageService imageService;
+
+    @Autowired
+    public ImageController(ImageService imageService, FirebaseUtil firebaseUtil) {
+        this.imageService = imageService;
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(@RequestHeader("Authorization") String token, @RequestBody Image image) {
         try {
-            Firestore firestore = FirestoreClient.getFirestore();
-            ApiFuture<QuerySnapshot> query = firestore.collection("images")
-                    .whereEqualTo("userId", userId)
-                    .orderBy("timestamp")
-                    .get();
+            // Extract userId from Firebase token
+            String userId = FirebaseUtil.extractUserId(token.substring(7));
+            image.setUserId(userId);
 
-            List<QueryDocumentSnapshot> documents = query.get().getDocuments();
-            List<Map<String, Object>> images = documents.stream()
-                    .map(QueryDocumentSnapshot::getData)
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.ok(images);
+            // Save the image
+            imageService.saveImage(image);
+            return ResponseEntity.ok("Image uploaded successfully!");
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body("Failed to upload image: " + e.getMessage());
         }
     }
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file,
-                                              @RequestParam("userId") String userId) {
+
+    @GetMapping
+    public ResponseEntity<?> getImagesByUserId(@RequestHeader("Authorization") String token) {
         try {
-            // Convert the file to Base64
-            String base64Image = Base64.getEncoder().encodeToString(file.getBytes());
+            String userId = FirebaseUtil.extractUserId(token.substring(7));
+            List<Image> images = imageService.getImagesByUserId(userId);
+            return ResponseEntity.ok(images);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to fetch images: " + e.getMessage());
+        }
+    }
 
-            // Save the Base64 string and metadata to Firestore
-            Firestore firestore = FirestoreClient.getFirestore();
-            Map<String, Object> imageData = new     HashMap<>();
-            imageData.put("userId", userId);
-            imageData.put("imageBase64", base64Image);
-            imageData.put("fileName", file.getOriginalFilename());
-            imageData.put("timestamp", System.currentTimeMillis());
-
-            String documentId = UUID.randomUUID().toString();
-            firestore.collection("images").document(documentId).set(imageData);
-
-            return ResponseEntity.ok("Image uploaded successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Image upload failed!");
+    @DeleteMapping("/{imageId}")
+    public ResponseEntity<?> deleteImage(@PathVariable String imageId) {
+        try {
+            // Delete image
+            imageService.deleteImage(imageId);
+            return ResponseEntity.ok("Image deleted successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to delete image: " + e.getMessage());
         }
     }
 }

@@ -1,55 +1,42 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
+import '../utils/storage_helper.dart';
 
 class ImageService {
-  final String baseUrl = 'http://192.168.1.10:8080/api'; // Replace with your backend URL
+  final String baseUrl = 'http:// 172.22.55.55:8080/images';
 
-  Future<String> getToken() async {
-    // Replace with your method to retrieve the JWT token
-    return 'your-jwt-token';
-  }
+  Future<List<Map<String, dynamic>>> fetchImages(String userId) async {
+    final token = await StorageHelper.getToken();
 
-  Future<List<String>> fetchImages(String userId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/images?userId=$userId'),
+      Uri.parse('$baseUrl?userId=$userId'),
       headers: {
-        'Authorization': 'Bearer ${await getToken()}',
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
       },
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((item) => item['imageUrl'] as String).toList();
+      return List<Map<String, dynamic>>.from(json.decode(response.body));
     } else {
-      throw Exception('Failed to load images');
+      throw Exception('Failed to fetch images: ${response.reasonPhrase}');
     }
   }
 
-  Future<void> uploadImage(String userId) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> uploadImage(String userId, String imageUrl) async {
+    final token = await StorageHelper.getToken();
 
-    if (pickedFile == null) {
-      return; // User canceled image selection
-    }
-
-    final File imageFile = File(pickedFile.path);
-
-    final request = http.MultipartRequest(
-      'POST',
+    final response = await http.post(
       Uri.parse('$baseUrl/upload'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'userId': userId, 'imageUrl': imageUrl}),
     );
 
-    request.headers['Authorization'] = 'Bearer ${await getToken()}';
-    request.fields['userId'] = userId;
-    request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
-
-    final response = await request.send();
-
     if (response.statusCode != 200) {
-      throw Exception('Failed to upload image');
+      throw Exception('Failed to upload image: ${response.reasonPhrase}');
     }
   }
 }

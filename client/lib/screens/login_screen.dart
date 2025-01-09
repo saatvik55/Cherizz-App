@@ -12,18 +12,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-  @override
-  void dispose() {
-    // Dispose controllers to free resources
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   Future<void> _login() async {
     setState(() {
@@ -32,15 +25,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       String token = await AuthService.login(
-        _usernameController.text,
-        _passwordController.text,
+        {
+          'email': _emailController.text.trim(),
+          'password': _passwordController.text.trim(),
+        },
       );
 
       // Navigate to the main navigation page with the username
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => NavigationPage(username: _usernameController.text),
+          builder: (context) => NavigationPage(username: _emailController.text),
         ),
             (route) => false, // Remove all previous routes
       );
@@ -71,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                controller: _usernameController,
+                controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(),
