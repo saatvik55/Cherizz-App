@@ -1,12 +1,10 @@
 package com.gratitude.gratitude_photodiary.controller;
 
-import com.gratitude.gratitude_photodiary.dto.AuthRequest;
-import com.gratitude.gratitude_photodiary.entity.User;
-import com.gratitude.gratitude_photodiary.repository.UserRepository;
-import com.gratitude.gratitude_photodiary.util.*;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
+import com.gratitude.gratitude_photodiary.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,45 +15,71 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthService authService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    /**
-     * Endpoint to sign up a new user.
-     */
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody User user) {
-        // Encode the password before saving the user
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return ResponseEntity.ok("User registered successfully!");
+    public ResponseEntity<?> signupUser(@RequestBody Map<String, Object> payload) {
+        try {
+            String email = (String) payload.get("email");
+            String password = (String) payload.get("password");
+            if (email == null || password == null) {
+                return ResponseEntity.status(400).body("Email and password are required.");
+            }
+            String userId = authService.signupUser(email, password);
+            Map<String, String> response = new HashMap<>();
+            response.put("userId", userId);
+            return ResponseEntity.ok(response);
+        } catch (FirebaseAuthException e) {
+            return ResponseEntity.status(400).body("Error registering user: " + e.getMessage());
+        }
     }
 
-    /**
-     * Endpoint to log in a user and return a JWT token.
-     */
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody AuthRequest authRequest) {
-        // Retrieve user from database
-        User user = userRepository.findByUsername(authRequest.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> payload) {
+        try {
+            String email = payload.get("email");
+            String password = payload.get("password");
+            String userId = authService.loginUser(email, password);
 
-        // Validate the password
-        if (!passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
+            Map<String, String> response = new HashMap<>();
+            response.put("userId", userId);
+            return ResponseEntity.ok(response);
+        } catch (FirebaseAuthException e) {
+            return ResponseEntity.status(401).body("Invalid credentials: " + e.getMessage());
         }
+    }
 
-        // Generate JWT token
-        String token = jwtUtil.generateToken(user.getUsername());
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyToken(@RequestHeader("Authorization") String idToken) {
+        try {
+            FirebaseToken decodedToken = authService.verifyToken(idToken.substring(7)); // Remove "Bearer " prefix
+            String userId = decodedToken.getUid();
 
-        // Return the token in JSON format
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        return ResponseEntity.ok(response);
+            Map<String, String> response = new HashMap<>();
+            response.put("userId", userId);
+            response.put("email", decodedToken.getEmail());
+            return ResponseEntity.ok(response);
+        } catch (FirebaseAuthException e) {
+            return ResponseEntity.status(401).body("Invalid token: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable String userId) {
+        try {
+            return ResponseEntity.ok(authService.getUserById(userId));
+        } catch (FirebaseAuthException e) {
+            return ResponseEntity.status(404).body("User not found: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/user/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        try {
+            authService.deleteUser(userId);
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (FirebaseAuthException e) {
+            return ResponseEntity.status(400).body("Error deleting user: " + e.getMessage());
+        }
     }
 }

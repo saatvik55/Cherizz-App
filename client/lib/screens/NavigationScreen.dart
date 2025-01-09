@@ -31,7 +31,7 @@ class _NavigationPageState extends State<NavigationPage> {
   }
 
   Future<void> _logout() async {
-    await StorageHelper.clearToken(); // Clear the token
+    await StorageHelper.clearUserDetails(); // Clear the token
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),

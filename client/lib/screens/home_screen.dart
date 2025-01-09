@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:client/utils/storage_helper.dart';
-import 'package:client/screens/login_screen.dart';
+import '../utils/storage_helper.dart';
 import 'GalleryScreen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String username;
-
-  const HomeScreen({Key? key, required this.username}) : super(key: key);
+  const HomeScreen({Key? key, required String username}) : super(key: key);
 
   Future<void> _logout(BuildContext context) async {
-    await StorageHelper.clearToken();
-
-    // Navigate back to the login screen
+    await StorageHelper.clearUserDetails();
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false, // Remove all routes from the stack
+          (route) => false,
     );
   }
 
@@ -23,45 +19,33 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome, $username!'),
+        title: const Text('Home'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
             onPressed: () => _logout(context),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Welcome to Gratitude Photo Diary!',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the Gallery Screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GalleryScreen(
-                      userId: username, // Pass the actual username as userId
-                    ),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-              ),
-              child: const Text('View My Gallery'),
-            ),
-          ],
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            final userId = await StorageHelper.getUserId();
+            final username = await StorageHelper.getUsername();
+            if (userId != null && username != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GalleryScreen(userId: userId),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('User details missing. Please log in again.')),
+              );
+            }
+          },
+          child: const Text('View My Gallery'),
         ),
       ),
     );
