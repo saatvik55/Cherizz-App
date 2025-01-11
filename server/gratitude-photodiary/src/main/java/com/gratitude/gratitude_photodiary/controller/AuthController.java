@@ -18,14 +18,19 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signupUser(@RequestBody Map<String, Object> payload) {
+    public ResponseEntity<?> signupUser(@RequestBody Map<String, String> payload) {
         try {
             String email = (String) payload.get("email");
             String password = (String) payload.get("password");
-            if (email == null || password == null) {
-                return ResponseEntity.status(400).body("Email and password are required.");
+            String firstName = (String) payload.get("first_name");
+            String lastName = (String) payload.get("last_name");
+            String phone = (String) payload.get("phone");
+
+            if (email == null || password == null || firstName == null || lastName == null || phone == null) {
+                return ResponseEntity.status(400).body("All fields are required.");
             }
-            String userId = authService.signupUser(email, password);
+
+            String userId = authService.signupUser(payload);
             Map<String, String> response = new HashMap<>();
             response.put("userId", userId);
             return ResponseEntity.ok(response);
@@ -39,7 +44,7 @@ public class AuthController {
         try {
             String email = payload.get("email");
             String password = payload.get("password");
-            String userId = authService.loginUser(email, password);
+            String userId = authService.loginUser(payload);
 
             Map<String, String> response = new HashMap<>();
             response.put("userId", userId);

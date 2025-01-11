@@ -1,23 +1,59 @@
 package com.gratitude.gratitude_photodiary.service;
 
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.auth.*;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthService {
-    public String signupUser(String email, String password) throws FirebaseAuthException {
+
+    private final Firestore firestore;
+
+    public AuthService(Firestore firestore) {
+        this.firestore = firestore;
+    }
+
+    public String signupUser(Map<String, String> details) throws FirebaseAuthException {
+        String email = details.get("email");
+        String password = details.get("password");
+        String firstName = details.get("first_name");
+        String lastName = details.get("last_name");
+        String phone = details.get("phone");
+
+        // Create user in Firebase Authentication
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
                 .setEmail(email)
                 .setPassword(password)
+                .setDisplayName(firstName + " " + lastName)
+                .setPhoneNumber(phone)
                 .setEmailVerified(false)
                 .setDisabled(false);
 
         UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-        return userRecord.getUid();
+        String uid = userRecord.getUid();
+
+        Map<String, Object> userDoc = new HashMap<>();
+        userDoc.put("firstName", firstName);
+        userDoc.put("lastName", lastName);
+        userDoc.put("email", email);
+        userDoc.put("phone", phone);
+        userDoc.put("displayName", firstName + " " + lastName);
+        userDoc.put("emailVerified", false);
+        userDoc.put("createdAt", System.currentTimeMillis()); // Timestamp
+
+        firestore.collection("users").document(uid).set(userDoc);
+
+        return uid;
     }
 
-    public String loginUser(String email, String password) throws FirebaseAuthException {
+    public String loginUser(Map<String, String> details) throws FirebaseAuthException {
         try {
+
+            String email = details.get("email");
+            String password = details.get("password");
             FirebaseAuth auth = FirebaseAuth.getInstance();
             UserRecord userRecord = auth.getUserByEmail(email);
 

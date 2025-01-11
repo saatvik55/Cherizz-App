@@ -5,23 +5,19 @@ class AuthService {
   static const String baseUrl = 'http://172.22.55.55:8080/auth';
 
   // Login API call
-  static Future<String> login(Map<String, dynamic> loginData) async {
+  static Future<String> login(Map<String, String> credentials) async {
     final response = await http.post(
       Uri.parse('$baseUrl/login'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(loginData),
+      body: jsonEncode(credentials),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      if (data['userId'] != null) {
-        return data['userId'];
-      } else {
-        throw Exception('Token not found in response');
-      }
+      final String userId = data['userId'];
+      return userId;
     } else {
-      final data = jsonDecode(response.body);
-      throw Exception(data['error'] ?? 'Login failed');
+      throw Exception('Failed to login');
     }
   }
 
@@ -38,4 +34,18 @@ class AuthService {
       throw Exception('Signup failed');
     }
   }
+
+  static Future<Map<String, dynamic>> getUserById(String userId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/$userId'),
+      headers: {'Authorization': 'Bearer <your-token>'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to fetch user details');
+    }
+  }
+
 }
