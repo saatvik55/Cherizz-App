@@ -4,26 +4,22 @@ import 'GalleryScreen.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key, required String username}) : super(key: key);
-
-  Future<void> _logout(BuildContext context) async {
-    await StorageHelper.clearUserDetails();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false,
-    );
-  }
+  final String userId;
+  const HomeScreen({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => _logout(context),
+            icon: const Icon(Icons.logout), onPressed: () {  },
+
           ),
         ],
       ),
@@ -31,8 +27,7 @@ class HomeScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () async {
             final userId = await StorageHelper.getUserId();
-            final username = await StorageHelper.getUsername();
-            if (userId != null && username != null) {
+            if (userId != null ) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -50,4 +45,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }

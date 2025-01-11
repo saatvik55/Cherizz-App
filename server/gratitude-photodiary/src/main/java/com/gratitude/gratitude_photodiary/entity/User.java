@@ -1,24 +1,44 @@
 package com.gratitude.gratitude_photodiary.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity
-@Data                       // Lombok: Generates getters, setters, toString, equals, hashCode, etc.
-@NoArgsConstructor
-@Table(name = "users") // Lombok: Generates a no-arguments constructor
+@Setter
+@Getter
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // Getters and Setters
+    private String userId;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private String displayName;
+    private boolean emailVerified;
+    private long createdAt;
 
-    private String username;
-    private String password;
+    public User(String userId, String email, String firstName, String lastName, String phone,
+                String displayName, boolean emailVerified, long createdAt) {
+        this.userId = userId;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.displayName = displayName;
+        this.emailVerified = emailVerified;
+        this.createdAt = createdAt;
+    }
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", emailVerified=" + emailVerified +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

@@ -1,8 +1,8 @@
 import 'package:client/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../utils/storage_helper.dart';
 import 'NavigationScreen.dart';
-import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,30 +17,34 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-
   Future<void> _login() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      String token = await AuthService.login(
+      String userId = await AuthService.login(
         {
           'email': _emailController.text.trim(),
           'password': _passwordController.text.trim(),
         },
       );
 
-      // Navigate to the main navigation page with the username
+      await StorageHelper.saveUserId(userId);
+
+      // Navigate to the main navigation page with the user details
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => NavigationPage(username: _emailController.text),
+          builder: (context) => NavigationPage(
+            userId: userId,
+          ),
         ),
             (route) => false, // Remove all previous routes
       );
     } catch (e) {
       // Show error message
+      print("my error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
       );
@@ -50,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: 'Username',
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {

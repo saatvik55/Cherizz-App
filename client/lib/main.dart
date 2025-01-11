@@ -1,5 +1,4 @@
 import 'package:client/screens/NavigationScreen.dart';
-import 'package:client/screens/home_screen.dart';
 import 'package:client/screens/login_screen.dart';
 import 'package:client/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +15,15 @@ class MyApp extends StatelessWidget {
       title: 'Gratitude Photo Diary',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: FutureBuilder<String?>(
-        future: StorageHelper.getToken(),
+        future: StorageHelper.getUserId(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
-          } else if (snapshot.data != null) {
-            return NavigationPage(username: '',);
+          } else if (snapshot.hasData && snapshot.data != null) {
+            final userId = snapshot.data!;
+            return NavigationPage(
+              userId: userId,
+            );
           } else {
             return LoginScreen();
           }
