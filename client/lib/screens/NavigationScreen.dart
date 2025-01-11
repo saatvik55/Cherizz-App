@@ -6,9 +6,12 @@ import 'login_screen.dart';
 import '../utils/storage_helper.dart';
 
 class NavigationPage extends StatefulWidget {
-  final String username; // Pass logged-in user's username
+  final String userId; // Pass logged-in user's userId
 
-  const NavigationPage({Key? key, required this.username}) : super(key: key);
+  const NavigationPage({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   _NavigationPageState createState() => _NavigationPageState();
@@ -24,20 +27,13 @@ class _NavigationPageState extends State<NavigationPage> {
     super.initState();
     // Initialize pages with user data
     _pages = [
-      HomeScreen(username: widget.username),
-      GalleryScreen(userId: widget.username), // Replace with user ID if needed
-      SettingsScreen(onLogout: _logout),
+      HomeScreen(userId: widget.userId),
+      GalleryScreen(userId: widget.userId), // Replace with user ID if needed
+      SettingsScreen(),
     ];
   }
 
-  Future<void> _logout() async {
-    await StorageHelper.clearUserDetails(); // Clear the token
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false,
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {

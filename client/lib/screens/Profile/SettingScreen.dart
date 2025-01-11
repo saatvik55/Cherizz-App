@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key, required Future<void> Function() onLogout}) : super(key: key);
-
+  const SettingsScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

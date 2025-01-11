@@ -1,17 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../utils/storage_helper.dart';
 
 class ImageService {
-  final String baseUrl = 'http:// 172.22.55.55:8080/images';
+  final String baseUrl = 'http://172.22.55.55:8080/images';
 
-  Future<List<Map<String, dynamic>>> fetchImages(String userId) async {
-    final token = await StorageHelper.getToken();
-
+  /// Fetch images for the user using their UID
+  Future<List<Map<String, dynamic>>> fetchImages(String uid) async {
     final response = await http.get(
-      Uri.parse('$baseUrl?userId=$userId'),
+      Uri.parse('$baseUrl?uid=$uid'), // Directly pass the UID as query parameter
       headers: {
-        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
     );
@@ -23,16 +20,14 @@ class ImageService {
     }
   }
 
-  Future<void> uploadImage(String userId, String imageUrl) async {
-    final token = await StorageHelper.getToken();
-
+  /// Upload an image for the user using their UID
+  Future<void> uploadImage(String uid, String imageUrl) async {
     final response = await http.post(
       Uri.parse('$baseUrl/upload'),
       headers: {
-        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },
-      body: json.encode({'userId': userId, 'imageUrl': imageUrl}),
+      body: json.encode({'uid': uid, 'imageUrl': imageUrl}), // Pass UID directly in the body
     );
 
     if (response.statusCode != 200) {

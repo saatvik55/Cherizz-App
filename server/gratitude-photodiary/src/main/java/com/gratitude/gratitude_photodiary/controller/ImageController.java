@@ -2,7 +2,6 @@ package com.gratitude.gratitude_photodiary.controller;
 
 import com.gratitude.gratitude_photodiary.entity.Image;
 import com.gratitude.gratitude_photodiary.service.ImageService;
-import com.gratitude.gratitude_photodiary.util.FirebaseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,14 @@ public class ImageController {
     private final ImageService imageService;
 
     @Autowired
-    public ImageController(ImageService imageService, FirebaseUtil firebaseUtil) {
+    public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestHeader("Authorization") String token, @RequestBody Image image) {
+    public ResponseEntity<?> uploadImage(@RequestParam String userId, @RequestBody Image image) {
         try {
-            // Extract userId from Firebase token
-            String userId = FirebaseUtil.extractUserId(token.substring(7));
+            // Set userId to the image entity
             image.setUserId(userId);
 
             // Save the image
@@ -36,9 +34,9 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getImagesByUserId(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> getImages(@RequestParam String userId) {
         try {
-            String userId = FirebaseUtil.extractUserId(token.substring(7));
+            // Fetch images for the given userId
             List<Image> images = imageService.getImagesByUserId(userId);
             return ResponseEntity.ok(images);
         } catch (Exception e) {
@@ -46,14 +44,4 @@ public class ImageController {
         }
     }
 
-    @DeleteMapping("/{imageId}")
-    public ResponseEntity<?> deleteImage(@PathVariable String imageId) {
-        try {
-            // Delete image
-            imageService.deleteImage(imageId);
-            return ResponseEntity.ok("Image deleted successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to delete image: " + e.getMessage());
-        }
-    }
 }
