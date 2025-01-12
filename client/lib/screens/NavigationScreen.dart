@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../utils/UserProvider.dart';
 import 'GalleryScreen.dart';
 import 'Profile/SettingScreen.dart';
 import 'home_screen.dart';
-import 'login_screen.dart';
-import '../utils/storage_helper.dart';
 
 class NavigationPage extends StatefulWidget {
-  final String userId; // Pass logged-in user's userId
-
   const NavigationPage({
     Key? key,
-    required this.userId,
   }) : super(key: key);
 
   @override
@@ -19,25 +16,37 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   int _currentIndex = 0;
-
   late List<Widget> _pages; // Pages depend on user data
-
   @override
   void initState() {
     super.initState();
     // Initialize pages with user data
     _pages = [
-      HomeScreen(userId: widget.userId),
-      GalleryScreen(userId: widget.userId), // Replace with user ID if needed
-      SettingsScreen(),
+      HomeScreen(),
+      GalleryScreen(), // Replace with user ID if needed
+      SettingsScreen()
     ];
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    final user =Provider.of<UserManager>(context).user;
+    if(user==null)
+      print("User is null");
+    else
+      print("User is not null ${user.displayName}");
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation Page'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              UserManager().logout(context);
+            },
+          ),
+        ],
+      ),
       body: _pages[_currentIndex], // Display the selected page
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

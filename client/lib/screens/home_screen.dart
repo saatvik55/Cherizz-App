@@ -1,42 +1,44 @@
+import 'package:client/utils/UserProvider.dart';
 import 'package:flutter/material.dart';
-import '../utils/storage_helper.dart';
+import 'package:provider/provider.dart';
 import 'GalleryScreen.dart';
-import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String userId;
   const HomeScreen({
     Key? key,
-    required this.userId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout), onPressed: () {  },
-
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              UserManager().logout(context);
+            },
           ),
         ],
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
-            final userId = await StorageHelper.getUserId();
-            if (userId != null ) {
+            final user = Provider.of<UserManager>(context, listen: false).user;
+            // print(user?.email);
+            if (user!= null) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GalleryScreen(userId: userId),
+                  builder: (context) => GalleryScreen(),
                 ),
               );
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('User details missing. Please log in again.')),
+                const SnackBar(
+                    content:
+                        Text('User details missing. Please log in again.')),
               );
             }
           },

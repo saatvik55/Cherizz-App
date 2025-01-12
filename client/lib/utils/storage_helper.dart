@@ -1,18 +1,33 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StorageHelper {
-  static Future<void> saveUserId(String userId) async {
+import '../models/user.dart';
+
+class UserStorage {
+  static Future<void> saveUser(User user) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userId', userId);
+    await prefs.setString('user', jsonEncode(user.toJson()));
+    await prefs.setBool('isLoggedIn', true); // Set login state
   }
 
-  static Future<String?> getUserId() async {
+  static Future<User?> loadUser() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userId');
+    final userData = prefs.getString('user');
+    if (userData != null) {
+      return User.fromJson(jsonDecode(userData));
+    }
+    return null; // No user data found
   }
 
-  Future<void> clearUserId() async {
+  static Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userId');
+    return prefs.getBool('isLoggedIn') ?? false; // Default to false
+  }
+
+  static Future<void> clearUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user');
+    await prefs.setBool('isLoggedIn', false); // Clear login state
   }
 }

@@ -1,8 +1,12 @@
 import 'package:client/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/user.dart';
 import '../services/auth_service.dart';
 import '../utils/storage_helper.dart';
 import 'NavigationScreen.dart';
+import '../utils/UserProvider.dart';
+import '../services/userService.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,15 +34,17 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       );
 
-      await StorageHelper.saveUserId(userId);
+      // Store user data in UserManager
+      User user =  await UserService().fetchUser(userId);
+      await UserStorage.saveUser(user);
+      Provider.of<UserManager>(context, listen: false).setUser(user);
+      print(user.displayName);
 
       // Navigate to the main navigation page with the user details
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => NavigationPage(
-            userId: userId,
-          ),
+          builder: (context) => NavigationPage(),
         ),
             (route) => false, // Remove all previous routes
       );

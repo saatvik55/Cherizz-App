@@ -1,46 +1,27 @@
+import 'package:client/utils/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/image_service.dart';
 
 class GalleryScreen extends StatefulWidget {
-  final String userId;
-
-  const GalleryScreen({Key? key, required this.userId}) : super(key: key);
-
   @override
   _GalleryScreenState createState() => _GalleryScreenState();
 }
 
-class _GalleryScreenState extends State<GalleryScreen> {
-  final ImageService _imageService = ImageService();
+class _GalleryScreenState extends State<GalleryScreen>{
+  final ImageService imageService = ImageService();
   late Future<List<Map<String, dynamic>>> _images;
 
   @override
   void initState() {
     super.initState();
-    _images = _imageService.fetchImages(widget.userId);
   }
 
-  Future<void> _refreshImages() async {
-    setState(() {
-      _images = _imageService.fetchImages(widget.userId);
-    });
-  }
-
-  Future<void> _uploadImage() async {
-    // Replace with your image picker logic
-    const imageUrl = 'https://example.com/sample-image.jpg';
-
-    try {
-      await _imageService.uploadImage(widget.userId, imageUrl);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Image uploaded successfully!')),
-      );
-      await _refreshImages(); // Refresh the image list
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to upload image: $e')),
-      );
-    }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = Provider.of<UserManager>(context).user;
+    _images = imageService.fetchImages(user!.userId);
   }
 
   @override
@@ -96,7 +77,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _uploadImage,
+        onPressed: (){},
         tooltip: 'Upload Image',
         child: const Icon(Icons.add),
       ),
