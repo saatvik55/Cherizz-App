@@ -37,6 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
       );
       Navigator.pop(context);
     } catch (e) {
+      print("yes");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
       );

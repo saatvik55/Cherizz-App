@@ -1,11 +1,18 @@
 import 'package:client/screens/NavigationScreen.dart';
 import 'package:client/screens/login_screen.dart';
+import 'package:client/utils/UserProvider.dart';
 import 'package:client/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (context) => UserManager(),
+        child: MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -12,9 +12,10 @@ public class UserService {
 
     private final Firestore firestore;
 
-    public UserService() {
-        this.firestore = FirestoreOptions.getDefaultInstance().getService();
+    public UserService(Firestore firestore) {
+        this.firestore = firestore;
     }
+
 
     public Map<String, Object> getUserDetails(String userId) throws Exception {
         DocumentSnapshot document = firestore.collection("users").document(userId).get().get();

@@ -1,12 +1,13 @@
 package com.gratitude.gratitude_photodiary.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Setter
 @Getter
 public class User {
-    // Getters and Setters
     private String userId;
     private String email;
     private String firstName;

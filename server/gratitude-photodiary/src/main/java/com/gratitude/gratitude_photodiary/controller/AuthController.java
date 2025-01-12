@@ -20,11 +20,11 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signupUser(@RequestBody Map<String, String> payload) {
         try {
-            String email = (String) payload.get("email");
-            String password = (String) payload.get("password");
-            String firstName = (String) payload.get("first_name");
-            String lastName = (String) payload.get("last_name");
-            String phone = (String) payload.get("phone");
+            String email = payload.get("email");
+            String password = payload.get("password");
+            String firstName = payload.get("first_name");
+            String lastName = payload.get("last_name");
+            String phone = payload.get("phone");
 
             if (email == null || password == null || firstName == null || lastName == null || phone == null) {
                 return ResponseEntity.status(400).body("All fields are required.");
