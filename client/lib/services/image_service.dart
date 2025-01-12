@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ImageService {
-  final String baseUrl = 'http://172.22.55.55:8080/images';
+  static final  baseUrl = dotenv.env['BASE_URL'];
+  static final String apiBase= '$baseUrl/images';
 
   /// Fetch images for the user using their UID
   Future<List<Map<String, dynamic>>> fetchImages(String uid) async {
