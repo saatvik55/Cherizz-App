@@ -1,5 +1,6 @@
 import 'package:client/utils/UserProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../services/image_service.dart';
 
@@ -8,7 +9,7 @@ class GalleryScreen extends StatefulWidget {
   _GalleryScreenState createState() => _GalleryScreenState();
 }
 
-class _GalleryScreenState extends State<GalleryScreen>{
+class _GalleryScreenState extends State<GalleryScreen> {
   final ImageService imageService = ImageService();
   late Future<List<Map<String, dynamic>>> _images;
 
@@ -77,7 +78,18 @@ class _GalleryScreenState extends State<GalleryScreen>{
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: () async {
+          final ImagePicker picker = ImagePicker();
+          final XFile? image =
+              await picker.pickImage(source: ImageSource.gallery);
+          if (image != null) {
+            final user = Provider.of<UserManager>(context, listen: false).user;
+            await imageService.uploadImage(image.path, user!.userId);
+            setState(() {
+              _images = imageService.fetchImages(user.userId);
+            });
+          }
+        },
         tooltip: 'Upload Image',
         child: const Icon(Icons.add),
       ),

@@ -1,34 +1,76 @@
 package com.gratitude.gratitude_photodiary.service;
 
-import com.gratitude.gratitude_photodiary.entity.Image;
-import com.gratitude.gratitude_photodiary.repository.ImageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.Map;
 
 @Service
 public class ImageService {
 
-    private final ImageRepository imageRepository;
+    private final Firestore db;
 
-    @Autowired
-    public ImageService(ImageRepository imageRepository) {
-        this.imageRepository = imageRepository;
+    public ImageService() {
+        this.db = FirestoreClient.getFirestore();
     }
 
-    public void saveImage(Image image) throws ExecutionException, InterruptedException {
-        imageRepository.saveImage(image);
+    public String addImage(String userId, String imageUrl) throws Exception {
+        String imageId = db.collection("users")
+                .document(userId)
+                .collection("images")
+                .document()
+                .getId(); // Auto-generate imageId
+
+        Map<String, Object> imageData = new HashMap<>();
+        imageData.put("imageUrl", imageUrl);
+        imageData.put("createdAt", System.currentTimeMillis());
+
+        db.collection("users")
+                .document(userId)
+                .collection("images")
+                .document(imageId)
+                .set(imageData)
+                .get();
+
+        return imageId;
     }
 
-    public List<Image> getImagesByUserId(String userId) throws ExecutionException, InterruptedException {
-        return imageRepository.getImagesByUserId(userId);
+    /**
+     * Fetch all images for a specific user
+     */
+    public List<Map<String, Object>> getImages(String userId) throws Exception {
+        List<Map<String, Object>> images = new ArrayList<>();
+        ApiFuture<QuerySnapshot> future = db.collection("users")
+                .document(userId)
+                .collection("images")
+                .get();
+
+        for (DocumentSnapshot document : future.get().getDocuments()) {
+            Map<String, Object> imageData = document.getData();
+            if (imageData != null) {
+                imageData.put("imageId", document.getId()); // Include imageId in the response
+                images.add(imageData);
+            }
+        }
+        return images;
     }
 
-    public void deleteImage(String imageId) throws ExecutionException, InterruptedException {
-        imageRepository.deleteImage(imageId);
+    /**
+     * Delete a specific image for a user
+     */
+    public String deleteImage(String userId, String imageId) throws Exception {
+        db.collection("users")
+                .document(userId)
+                .collection("images")
+                .document(imageId)
+                .delete()
+                .get();
+
+        return "Image deleted successfully for user: " + userId;
     }
-
-
 }

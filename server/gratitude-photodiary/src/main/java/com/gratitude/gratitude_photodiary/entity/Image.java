@@ -14,8 +14,6 @@ public class Image {
     private String imageUrl;
     private LocalDateTime uploadedAt;
 
-    public Image() {}
-
     public Image(String id, String userId, String imageUrl, LocalDateTime uploadedAt) {
         this.id = id;
         this.userId = userId;

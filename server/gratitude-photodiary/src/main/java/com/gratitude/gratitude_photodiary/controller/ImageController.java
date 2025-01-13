@@ -1,15 +1,15 @@
 package com.gratitude.gratitude_photodiary.controller;
 
-import com.gratitude.gratitude_photodiary.entity.Image;
 import com.gratitude.gratitude_photodiary.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/users/{userId}/images")
 public class ImageController {
 
     private final ImageService imageService;
@@ -19,29 +19,50 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadImage(@RequestParam String userId, @RequestBody Image image) {
-        try {
-            // Set userId to the image entity
-            image.setUserId(userId);
+    @PostMapping
+    public ResponseEntity<?> uploadImage(
+            @PathVariable String userId,
+            @RequestBody Map<String, String> payload) {
 
-            // Save the image
-            imageService.saveImage(image);
-            return ResponseEntity.ok("Image uploaded successfully!");
+        String imageUrl = payload.get("imageUrl");
+
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return ResponseEntity.badRequest().body("Image URL is required");
+        }
+
+        try {
+            String imageId = imageService.addImage(userId, imageUrl); // Generate imageId in service
+            return ResponseEntity.ok(Map.of("message", "Image uploaded successfully!", "imageId", imageId));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to upload image: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("error", "Error uploading image", "details", e.getMessage()));
         }
     }
 
+    /**
+     * Get all images for a specific user.
+     */
     @GetMapping
-    public ResponseEntity<?> getImages(@RequestParam String userId) {
+    public ResponseEntity<?> getImages(@PathVariable String userId) {
         try {
-            // Fetch images for the given userId
-            List<Image> images = imageService.getImagesByUserId(userId);
+            List<Map<String, Object>> images = imageService.getImages(userId);
             return ResponseEntity.ok(images);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to fetch images: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to fetch images", "details", e.getMessage()));
         }
     }
 
+    /**
+     * Delete an image from a user's collection.
+     */
+    @DeleteMapping("/{imageId}")
+    public ResponseEntity<?> deleteImage(
+            @PathVariable String userId,
+            @PathVariable String imageId) {
+        try {
+            String result = imageService.deleteImage(userId, imageId);
+            return ResponseEntity.ok(Map.of("message", result));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to delete image", "details", e.getMessage()));
+        }
+    }
 }
