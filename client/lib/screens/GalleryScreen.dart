@@ -97,13 +97,15 @@ class _GalleryScreenState extends State<GalleryScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           try {
+            final user = Provider.of<UserManager>(context, listen: false).user;
+            print("userid=${user?.email}");
             final ImagePicker picker = ImagePicker();
-            final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+            final XFile? pickedImage =
+                await picker.pickImage(source: ImageSource.gallery);
             if (pickedImage != null) {
-              final user =
-                  Provider.of<UserManager>(context, listen: false).user;
               if (user != null) {
                 final base64Image = await convertToBase64(pickedImage);
+
                 await imageService.uploadImage(user.userId, base64Image);
                 setState(_loadImages);
               } else {

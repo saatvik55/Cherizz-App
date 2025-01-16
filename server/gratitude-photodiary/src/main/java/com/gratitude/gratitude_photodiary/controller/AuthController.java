@@ -14,77 +14,60 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
+    @Autowired
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    /**
+     * Sign up a new user.
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> signupUser(@RequestBody Map<String, String> payload) {
         try {
-            String email = payload.get("email");
-            String password = payload.get("password");
-            String firstName = payload.get("first_name");
-            String lastName = payload.get("last_name");
-            String phone = payload.get("phone");
-
-            if (email == null || password == null || firstName == null || lastName == null || phone == null) {
-                return ResponseEntity.status(400).body("All fields are required.");
-            }
+            validatePayload(payload, "email", "password", "first_name", "last_name", "phone");
 
             String userId = authService.signupUser(payload);
+
             Map<String, String> response = new HashMap<>();
             response.put("userId", userId);
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (FirebaseAuthException e) {
             return ResponseEntity.status(400).body("Error registering user: " + e.getMessage());
         }
     }
 
+    /**
+     * Log in an existing user.
+     */
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> payload) {
         try {
-            String email = payload.get("email");
-            String password = payload.get("password");
+            validatePayload(payload, "email", "password");
+
             String userId = authService.loginUser(payload);
 
             Map<String, String> response = new HashMap<>();
             response.put("userId", userId);
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (FirebaseAuthException e) {
             return ResponseEntity.status(401).body("Invalid credentials: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
     }
 
-    @PostMapping("/verify")
-    public ResponseEntity<?> verifyToken(@RequestHeader("Authorization") String idToken) {
-        try {
-            FirebaseToken decodedToken = authService.verifyToken(idToken.substring(7)); // Remove "Bearer " prefix
-            String userId = decodedToken.getUid();
-
-            Map<String, String> response = new HashMap<>();
-            response.put("userId", userId);
-            response.put("email", decodedToken.getEmail());
-            return ResponseEntity.ok(response);
-        } catch (FirebaseAuthException e) {
-            return ResponseEntity.status(401).body("Invalid token: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable String userId) {
-        try {
-            return ResponseEntity.ok(authService.getUserById(userId));
-        } catch (FirebaseAuthException e) {
-            return ResponseEntity.status(404).body("User not found: " + e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/user/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
-        try {
-            authService.deleteUser(userId);
-            return ResponseEntity.ok("User deleted successfully");
-        } catch (FirebaseAuthException e) {
-            return ResponseEntity.status(400).body("Error deleting user: " + e.getMessage());
+    private void validatePayload(Map<String, String> payload, String... requiredFields) {
+        for (String field : requiredFields) {
+            if (payload.get(field) == null || payload.get(field).isEmpty()) {
+                throw new IllegalArgumentException("Field '" + field + "' is required.");
+            }
         }
     }
 }

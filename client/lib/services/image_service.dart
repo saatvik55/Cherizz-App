@@ -34,7 +34,7 @@ class ImageService {
       print("Uploading to ImageKit...");
       final imageUrl = await ImageKitService().uploadImage(base64Image, 'uploaded_image_${DateTime.now().millisecondsSinceEpoch}');
       print("Image uploaded to ImageKit: $imageUrl");
-
+      print(userId);
       final response = await http.post(
         Uri.parse('$apiBase/$userId/images'), // Replace with your backend endpoint
         headers: {
