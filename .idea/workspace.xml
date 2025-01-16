@@ -13,18 +13,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8dc9c626-7181-4ae3-b260-fd380764dd55" name="Changes" comment="State changes">
-      <change afterPath="$PROJECT_DIR$/client/lib/utils/UserProvider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+    <list default="true" id="8dc9c626-7181-4ae3-b260-fd380764dd55" name="Changes" comment="Image service">
+      <change afterPath="$PROJECT_DIR$/client/lib/services/imagekit_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/utils/fileSystem.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/config/ImageKitConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/ImageKitController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/dto/UploadRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/service/ImageKitService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/resources/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/lib/screens/signup_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/screens/signup_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/client/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/screens/GalleryScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/screens/GalleryScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/services/auth_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/services/auth_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/services/image_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/services/image_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/services/userService.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/services/userService.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/GratitudePhotodiaryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/java/com/gratitude/gratitude_photodiary/GratitudePhotodiaryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/gratitude-photodiary/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,8 +42,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Class" />
         <option value="Dart File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -66,34 +73,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GratitudePhotodiaryApplication.executor": "Run",
-    "Application.JwtUtil.executor": "Run",
-    "Flutter.main.dart.executor": "Run",
-    "Maven.gratitude-photodiary [clean,install...].executor": "Debug",
-    "Maven.gratitude-photodiary [clean,install].executor": "Run",
-    "Maven.gratitude-photodiary [clean].executor": "Run",
-    "Maven.gratitude-photodiary [install].executor": "Run",
-    "Maven.gratitude-photodiary.executor": "Run",
-    "PROJECT_TRUSTED_KEY": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "io.flutter.reload.alreadyRun": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/IDEA_Projects/GratitutePhotoDiary/server/gratitude-photodiary/src/main/resources/firebase",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.3264368",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "settings.editor.splitter.proportion": "0.34521386",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Application.GratitudePhotodiaryApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.JwtUtil.executor&quot;: &quot;Run&quot;,
+    &quot;Flutter.SettingScreen.dart.executor&quot;: &quot;Run&quot;,
+    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary [clean,install...].executor&quot;: &quot;Debug&quot;,
+    &quot;Maven.gratitude-photodiary [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gratitude-photodiary.executor&quot;: &quot;Run&quot;,
+    &quot;PROJECT_TRUSTED_KEY&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/IDEA_Projects/GratitutePhotoDiary/server/gratitude-photodiary/src/main/resources/firebase&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.3264368&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.34521386&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.gratitude.gratitude_photodiary.dto" />
@@ -102,6 +111,7 @@
       <recent name="E:\IDEA_Projects\GratitutePhotoDiary\server\gratitude-photodiary\src\main\resources\firebase" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\IDEA_Projects\GratitutePhotoDiary\client\assets" />
       <recent name="E:\IDEA_Projects\GratitutePhotoDiary\server" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -115,7 +125,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Flutter.main.dart">
+  <component name="RunManager" selected="Application.GratitudePhotodiaryApplication">
     <configuration name="GratitudePhotodiaryApplication" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.gratitude.gratitude_photodiary.GratitudePhotodiaryApplication" />
       <module name="gratitude-photodiary" />
@@ -288,7 +298,47 @@
       <option name="project" value="LOCAL" />
       <updated>1736605299130</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added user service">
+      <option name="closed" value="true" />
+      <created>1736670779277</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1736670779277</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added Provider for storage_helper.dart">
+      <option name="closed" value="true" />
+      <created>1736690715033</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736690715033</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added Provider for storage_helper.dart">
+      <option name="closed" value="true" />
+      <created>1736690771954</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1736690771954</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added dependencies">
+      <option name="closed" value="true" />
+      <created>1736690806428</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1736690806428</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Image service">
+      <option name="closed" value="true" />
+      <created>1736792335315</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1736792335315</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -306,6 +356,10 @@
     <MESSAGE value="Fixed Authorisation" />
     <MESSAGE value="Added user Service" />
     <MESSAGE value="State changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="State changes" />
+    <MESSAGE value="Added user service" />
+    <MESSAGE value="Added Provider for storage_helper.dart" />
+    <MESSAGE value="Added dependencies" />
+    <MESSAGE value="Image service" />
+    <option name="LAST_COMMIT_MESSAGE" value="Image service" />
   </component>
 </project>

@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+.gitignore
+/.gitignore
+/src/main/resources/config.properties
+/src/main/resources/application.properties
