@@ -1,8 +1,9 @@
-import 'package:client/utils/UserProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../services/image_service.dart';
+import '../utils/UserProvider.dart';
+import '../utils/fileSystem.dart';
 
 class GalleryScreen extends StatefulWidget {
   @override
@@ -16,13 +17,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   void initState() {
     super.initState();
+    _loadImages();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final user = Provider.of<UserManager>(context).user;
-    _images = imageService.fetchImages(user!.userId);
+  void _loadImages() {
+    final user = Provider.of<UserManager>(context, listen: false).user;
+    if (user != null) {
+      _images = imageService.fetchImages(user.userId);
+    } else {
+      _images = Future.value([]);
+    }
   }
 
   @override
@@ -55,18 +59,31 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 return Card(
                   elevation: 5,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Expanded(
                         child: Image.network(
                           image['imageUrl'],
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Icon(Icons.broken_image, size: 50),
+                            );
+                          },
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          image['uploadedAt'],
+                          image['uploadedAt'] ?? '',
                           style: const TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
@@ -79,15 +96,26 @@ class _GalleryScreenState extends State<GalleryScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final ImagePicker picker = ImagePicker();
-          final XFile? image =
-              await picker.pickImage(source: ImageSource.gallery);
-          if (image != null) {
-            final user = Provider.of<UserManager>(context, listen: false).user;
-            await imageService.uploadImage(image.path, user!.userId);
-            setState(() {
-              _images = imageService.fetchImages(user.userId);
-            });
+          try {
+            final ImagePicker picker = ImagePicker();
+            final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+            if (pickedImage != null) {
+              final user =
+                  Provider.of<UserManager>(context, listen: false).user;
+              if (user != null) {
+                final base64Image = await convertToBase64(pickedImage);
+                await imageService.uploadImage(user.userId, base64Image);
+                setState(_loadImages);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('User not logged in.')),
+                );
+              }
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Failed to upload image: $e')),
+            );
           }
         },
         tooltip: 'Upload Image',
