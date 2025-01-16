@@ -9,7 +9,7 @@ class AuthService {
   // Login API call
   static Future<String> login(Map<String, String> credentials) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/login'),
+      Uri.parse('$apiBase/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(credentials),
     );
@@ -27,7 +27,7 @@ class AuthService {
   // Signup API call
   static Future<void> signup(Map<String, dynamic> signupData ) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/signup'),
+      Uri.parse('$apiBase/signup'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(signupData),
     );
@@ -39,7 +39,7 @@ class AuthService {
 
   static Future<Map<String, dynamic>> getUserById(String userId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/user/$userId'),
+      Uri.parse('$apiBase/user/$userId'),
       headers: {'Authorization': 'Bearer <your-token>'},
     );
 

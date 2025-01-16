@@ -7,7 +7,7 @@ class UserService {
   static final String apiBase= '$baseUrl/users';
 
   Future<User> fetchUser(String userId) async {
-    final response = await http.get(Uri.parse('$baseUrl/users/$userId'));
+    final response = await http.get(Uri.parse('$apiBase/$userId'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
